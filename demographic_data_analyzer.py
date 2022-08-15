@@ -9,8 +9,7 @@ def calculate_demographic_data(print_data=True):
     df["index"]=1
     df=df.filter(items=["race","index"])
     df=df.groupby("race").sum()
- # dfvvtyvybuvtyv
-   print(df)
+ # df
     df.to_dict()
     
     race_count = None
