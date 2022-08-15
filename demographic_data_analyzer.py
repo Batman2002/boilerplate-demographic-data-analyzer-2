@@ -17,24 +17,44 @@ def calculate_demographic_data(print_data=True):
     # What is the average age of men?
     df=df.filter(items=["sex","age"]) 
     df=df.groupby("sex").mean()
-    df.to_dict()
+    # df.to_dict()
     average_age_men = df["age"]["Male"]
 
     # What is the percentage of people who have a Bachelor's degree?
     df = pd.read_csv("adult.data.csv")
-    percentage_bachelors = None
+    size=len((df))
+    # print(size)
+    df["index"]=1
+    df=df.filter(items=["education","index"])
+    df=df.groupby("education").sum()
+    # df
+    # df=df.to_dict()
+    # df
+    percentage_bachelors = (df["index"]["Bachelors"]/size)*100
 
     # What percentage of people with advanced education (`Bachelors`, `Masters`, or `Doctorate`) make more than 50K?
-    # What percentage of people without advanced education make more than 50K?
+    df=pd.read_csv("adult.data.csv",index_col="salary")
+    df2=pd.read_csv("adult.data.csv",index_col="salary")
+    df["index"]=1
+    df=df.filter(items=["salary","education","index"])
+    df=df.groupby("education").sum()
+    size2=df["index"]["Bachelors"] + df["index"]["Masters"] + df["index"]["Doctorate"]
+    df2["index"]=1
+    df2=df2.filter(items=["salary","education","index"])
+    df2=df2.drop(index="<=50K")
+    df2=df2.groupby("education").sum()
+    higher_education=(df2["index"]["Bachelors"] + df2["index"]["Masters"] + df2["index"]["Doctorate"])
 
+    
+    # What percentage of people without advanced education make more than 50K?
+    df = pd.read_csv("adult.data.csv")
     # with and without `Bachelors`, `Masters`, or `Doctorate`
     df = pd.read_csv("adult.data.csv")
-    higher_education = None
     lower_education = None
 
     # percentage with salary >50K
     df = pd.read_csv("adult.data.csv")
-    higher_education_rich = None
+    higher_education_rich =((df2["index"]["Bachelors"] + df2["index"]["Masters"] + df2["index"]["Doctorate"])/size2)*100
     lower_education_rich = None
 
     # What is the minimum number of hours a person works per week (hours-per-week feature)?
